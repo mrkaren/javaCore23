@@ -1,6 +1,13 @@
-package homework.employeemanagement;
+package homework.employeemanagement.storage;
 
-public class EmployeeStorage {
+import homework.employeemanagement.exception.EmployeeNotFoundException;
+import homework.employeemanagement.model.Company;
+import homework.employeemanagement.model.Employee;
+import homework.employeemanagement.util.StorageSerializeUtil;
+
+import java.io.Serializable;
+
+public class EmployeeStorage implements Serializable {
 
     private Employee[] employees = new Employee[10];
     private int size;
@@ -10,6 +17,7 @@ public class EmployeeStorage {
             extend();
         }
         employees[size++] = employee;
+        StorageSerializeUtil.serializeEmployeeStorage(this);
     }
 
     public void print() {
@@ -17,25 +25,25 @@ public class EmployeeStorage {
             System.out.println(employees[i]);
         }
     }
-    
+
     private void extend() {
         Employee[] tmp = new Employee[employees.length + 10];
         System.arraycopy(employees, 0, tmp, 0, employees.length);
         employees = tmp;
     }
 
-    public Employee getById(String employeeId) {
+    public Employee getById(String employeeId) throws EmployeeNotFoundException {
         for (int i = 0; i < size; i++) {
-            if(employees[i].getId().equals(employeeId)){
+            if (employees[i].getId().equals(employeeId)) {
                 return employees[i];
             }
         }
-        return null;
+        throw new EmployeeNotFoundException("Employee with " + employeeId + " does not exists!");
     }
 
     public void searchEmployeesByCompany(Company companyFromStorage) {
         for (int i = 0; i < size; i++) {
-            if(employees[i].getCompany().equals(companyFromStorage)){
+            if (employees[i].getCompany().equals(companyFromStorage)) {
                 System.out.println(employees[i]);
             }
         }
@@ -51,6 +59,7 @@ public class EmployeeStorage {
             employees[i - 1] = employees[i];
         }
         size--;
+        StorageSerializeUtil.serializeEmployeeStorage(this);
     }
 
     private int getIndexById(String companyId) {
