@@ -19,10 +19,10 @@ public class SerializationDemo {
 //        }
 
 
+
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             Object object = objectInputStream.readObject();
-            if (object instanceof Student) {
-                Student student = (Student) object;
+            if (object instanceof Student student) {
                 System.out.println(student);
             }
 

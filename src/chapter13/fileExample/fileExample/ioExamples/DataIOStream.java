@@ -15,14 +15,12 @@ public class DataIOStream {
     public static void write() throws IOException {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(FILE_PATH));
         out.writeBoolean(true);
-
         out.close();
     }
 
     public static void read() throws IOException {
         DataInputStream inputStream = new DataInputStream(new FileInputStream(FILE_PATH));
         System.out.println(inputStream.readBoolean());
-
         inputStream.close();
     }
 }
