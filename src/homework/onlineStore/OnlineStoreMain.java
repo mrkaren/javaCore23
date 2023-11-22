@@ -117,7 +117,7 @@ public class OnlineStoreMain implements Commands {
             System.out.println("Wrong product Id");
             return;
         }
-        product.setRemoved(true);
+        PRODUCT_STORAGE.delete(productId);
         StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
     }
 

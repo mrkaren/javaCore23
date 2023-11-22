@@ -4,42 +4,49 @@ import homework.onlineStore.model.Product;
 import homework.onlineStore.util.StorageSerializeUtil;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class ProductStorage implements Serializable {
 
-    private Product[] products = new Product[10];
-
-    private int size;
+    private Set<Product> products = new HashSet<>();
 
     public void add(Product product) {
-        if (products.length == size) {
-            extend();
-        }
-        products[size++] = product;
+        products.add(product);
         StorageSerializeUtil.serializeProductStorage(this);
     }
 
     public Product getById(String id) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getId().equals(id) && !products[i].isRemoved()) {
-                return products[i];
+        for (Product product : products) {
+            if (product.getId().equals(id)) {
+                return product;
             }
         }
         return null;
     }
 
     public void print() {
-        for (int i = 0; i < size; i++) {
-            if (!products[i].isRemoved()) {
-                System.out.println(products[i]);
-            }
+        for (Product product : products) {
+            System.out.println(product);
         }
     }
 
-    private void extend() {
-        Product[] tmp = new Product[products.length + 10];
-        System.arraycopy(products, 0, tmp, 0, products.length);
-        products = tmp;
+    public void delete(String productId) {
+//        for (Product product : products) {
+//            if (product.getId().equals(productId)) {
+//                products.remove(product);
+////                break;
+//            }
+//        }
+
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()) {
+            Product next = iterator.next();
+            if (next.getId().equals(productId)) {
+                iterator.remove();
+            }
+        }
     }
 
 }
